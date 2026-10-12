@@ -49,9 +49,11 @@ pages/dist/
 dist-server/
 *.tsbuildinfo
 
-# EdgeOne Makers Node 云函数产物：由平台构建命令（pnpm run build -> scripts/build-edge.mjs）
-# 在部署时生成，不入库；构建校验见 .github/workflows/build-verify.yml
-cloud-functions/
+# EdgeOne Makers Node 云函数入口 cloud-functions/[[default]].js 必须入库：
+# 平台在部署开始时扫描仓库判定项目类型，仓库里没有 cloud-functions/ 会被识别为
+# 纯静态站（构建日志："未检测到 server-handler"），导致 /api/* 永远到不了云函数。
+# 每次部署 pnpm run build 都会重新生成覆盖它，入库的只是占位/触发器。
+# 注意：构建校验见 .github/workflows/build-verify.yml
 
 # source maps (optional, can be removed)
 *.map
@@ -96,3 +98,4 @@ docs/code-review-*.md
 wrangler.d1.jsonc
 .wrangler-dryrun/
 .tmp-dryrun/
+
